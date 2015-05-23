@@ -5,9 +5,22 @@
 // the 2nd parameter is an array of 'requires'
 
 /* global cordova */
-angular.module('grocery', ['ionic'])
+angular.module('grocery', ['ionic', 'ngCordova'])
+.config(function($stateProvider, $urlRouterProvider, $locationProvider){
+    $stateProvider.state('home',{
+        url: '/',
+        views: {
+            home: {
+                templateUrl: 'partials/home.html',
+                controller: 'BarcodeController'
+            }
+        }
+    });
 
-.run(function($ionicPlatform) {
+    $urlRouterProvider.otherwise('/');
+    $locationProvider.html5Mode(false);
+})
+.run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,4 +31,30 @@ angular.module('grocery', ['ionic'])
       StatusBar.styleDefault();
     }
   });
+
+  $rootScope.$on('$stateChangeStart', function(){
+     console.log('$stateChangeStart');
+  });
+
+  $rootScope.$on('$stateChangeSuccess', function(){
+      console.log('$stateChangeSuccess');
+  });
+  $rootScope.$on('$stateChangeError', function(){
+      console.log('$stateChangeError');
+  });
+  $rootScope.$on('$stateNotFound', function(){
+      console.log('$stateNotFound');
+  });
+  $rootScope.$on('$viewContentLoading', function(event, viewConfig){
+      console.log('$viewContentLoading', {event:event, viewConfig:viewConfig});
+  });
+  $rootScope.$on('$viewContentLoaded', function(){
+      console.log('$viewContentLoaded');
+  });
+}).controller('BarcodeController',function($scope,$cordovaBarcodeScanner){
+    $scope.scanBarcode = function(){
+        $cordovaBarcodeScanner.scan().then(function(data){
+            console.log(data);
+        });
+    };
 });
