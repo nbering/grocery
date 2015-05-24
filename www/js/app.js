@@ -7,14 +7,10 @@
 /* global cordova */
 angular.module('grocery', ['ionic', 'ngCordova'])
 .config(function($stateProvider, $urlRouterProvider, $locationProvider){
-    $stateProvider.state('home',{
+    $stateProvider.state('home', {
         url: '/',
-        views: {
-            home: {
-                templateUrl: 'partials/home.html',
-                controller: 'BarcodeController'
-            }
-        }
+        templateUrl: 'partials/home.html',
+        controller: 'BarcodeController'
     });
 
     $urlRouterProvider.otherwise('/');
@@ -28,7 +24,7 @@ angular.module('grocery', ['ionic', 'ngCordova'])
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if(window.StatusBar) {
-      StatusBar.styleDefault();
+      window.StatusBar.styleDefault();
     }
   });
 
@@ -52,9 +48,10 @@ angular.module('grocery', ['ionic', 'ngCordova'])
       console.log('$viewContentLoaded');
   });
 }).controller('BarcodeController',function($scope,$cordovaBarcodeScanner){
+    $scope.barcodes = [];
     $scope.scanBarcode = function(){
         $cordovaBarcodeScanner.scan().then(function(data){
-            console.log(data);
+            $scope.barcodes.push(data);
         });
     };
 });

@@ -1,7 +1,15 @@
 <ion-view title="Scan">
-    <ion-content>
+    <ion-content class="padding-top">
         <button class="button button-block button-dark" ng-click="scanBarcode()">
             Scan Barcode
         </button>
+        <div class="card" ng-repeat="barcode in barcodes">
+            <div class="item item-divider">
+                {{barcode.format}}
+            </div>
+            <div class="item">
+                {{barcode.text}}
+            </div>
+        </div>
     </ion-content>
 </ion-view>
