@@ -136,7 +136,7 @@
 				.then(getDepartmentsSuccess, getDepartmentsError);
 			
 			function getDepartmentsSuccess(res){
-				$log.info("Add Department Success -> ", res);
+				$log.info("Get Departments Success -> ", res);
 				deferred.resolve(res.rows);
 			}
 			
