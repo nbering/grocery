@@ -51,3 +51,9 @@ gulp.task('git-check', function(done) {
   }
   done();
 });
+
+gulp.task('scripts', function(){
+    gulp.src(['./src/**/*.module.js', './src/**/*.js'])
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('./www/js/'));
+});
