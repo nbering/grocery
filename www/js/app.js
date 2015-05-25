@@ -98,6 +98,10 @@
 		//THE FOLD
 		
 		function init(){
+			$ionicPlatform.ready(initDb);
+		}
+		
+		function initDb(){
 			groceryRepository.database = $cordovaSQLite.openDB("grocery.db");
 			groceryRepository.database.transaction(setupDatabase);
 		}
