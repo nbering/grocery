@@ -12,7 +12,9 @@
         }
 
         function scanSuccess(data){
-            $scope.barcodes.push(data);
+            if (!data.cancelled){
+                $scope.barcodes.push(data);
+            }
         }
     }
 })();

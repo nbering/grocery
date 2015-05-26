@@ -14,6 +14,11 @@
             url: '/add-department',
             templateUrl: 'partials/add-department.html',
             controller: 'AddDepartmentController'
+        })
+        .state('department-list', {
+            url: '/department-list',
+            templateUrl: 'partials/department-list.html',
+            controller: 'DepartmentListController'
         });
 
         $urlRouterProvider.otherwise('/');

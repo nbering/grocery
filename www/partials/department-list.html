@@ -1,0 +1,11 @@
+<ion-view title="Departments">
+	<ion-content class="padding">
+		<ion-toggle ng-model="shouldShowDelete" class="ion-minus-circled"></ion-toggle>
+		<ion-list show-delete="shouldShowDelete">
+			<ion-item ng-repeat="department in departments">
+				<ion-delete-button class="ion-minus-circled" ng-click="deleteDepartment(department.id)"></ion-delete-button>
+				{{department.name}}
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>

@@ -37,8 +37,10 @@
 			var query = 'INSERT INTO departments (name) VALUES (?)';
 			var params = [department.name];
 			
-			$cordovaSQLite.execute(groceryRepository.database, query, params)
-				.then(addDepartmentCallback,addDepartmentError);
+			$ionicPlatform.ready(function(){
+				$cordovaSQLite.execute(groceryRepository.database, query, params)
+					.then(addDepartmentCallback,addDepartmentError);
+			});
 			
 			function addDepartmentCallback(res){
 				$log.info("Add Department Success -> ", res);
@@ -56,13 +58,18 @@
 		function getDepartments(){
 			var deferred = $q.defer();
 			var query = 'SELECT * FROM departments ORDER BY name';
-			
-			$cordovaSQLite.execute(groceryRepository.database, query)
-				.then(getDepartmentsSuccess, getDepartmentsError);
-			
+			var params = [];
+			$ionicPlatform.ready(function(){
+				$cordovaSQLite.execute(groceryRepository.database, query, params)
+					.then(getDepartmentsSuccess, getDepartmentsError);	
+			});			
 			function getDepartmentsSuccess(res){
 				$log.info("Get Departments Success -> ", res);
-				deferred.resolve(res.rows);
+				var result = [];
+				for (var i = 0; i < res.rows.length; i++){
+					result.push(res.rows.item(i));				
+				}
+				deferred.resolve(result);
 			}
 			
 			function getDepartmentsError(err){
@@ -78,8 +85,10 @@
 			var query = 'SELECT * FROM departments WHERE id = ? LIMIT 1';
 			var params = [id];
 			
+			$ionicPlatform.ready(function(){
 			$cordovaSQLite.execute(groceryRepository.database, query, params)
 				.then(getDepartmentSucces, getDepartmentFail);
+			});
 			
 			function getDepartmentSucces(res){
 				$log.info("Got a department.", res);
@@ -99,8 +108,10 @@
 			var query = 'UPDATE departments SET name = ? WHERE id = ?';
 			var params = [department.name, department.id];
 			
-			$cordovaSQLite.execute(groceryRepository.database, query, params)
-				.then(updateDepartmentSuccess, updateDepartmentFail);
+			$ionicPlatform.ready(function(){
+				$cordovaSQLite.execute(groceryRepository.database, query, params)
+					.then(updateDepartmentSuccess, updateDepartmentFail);
+			});
 			
 			function updateDepartmentSuccess(res){
 				deferred.resolve();
@@ -119,8 +130,10 @@
 			var query = 'DELETE FROM departments WHERE id = ?';
 			var params = [id];
 			
+			$ionicPlatform.ready(function(){
 			$cordovaSQLite.execute(groceryRepository.database, query, params)
 				.then(deleteDepartmentSuccess, deleteDepartmentFail);
+			});
 			
 			function deleteDepartmentSuccess(rest){
 				deferred.resolve();
