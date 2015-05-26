@@ -10,6 +10,9 @@
 		groceryRepository.database = null;
 		groceryRepository.addDepartment = addDepartment;
 		groceryRepository.getDepartments = getDepartments;
+		groceryRepository.getDepartment = getDepartment;
+		groceryRepository.updateDepartment = updateDepartment;
+		groceryRepository.deleteDepartment = deleteDepartment;
 		
 		init();
 		
@@ -64,6 +67,67 @@
 			
 			function getDepartmentsError(err){
 				$log.error("Error: Failed to get departments from database in groceryRespository.getDepartments(). Inner error -> ", err);
+				deferred.reject(err);
+			}
+			
+			return deferred.promise;
+		}
+		
+		function getDepartment(id){
+			var deferred = $q.defer();
+			var query = 'SELECT * FROM departments WHERE id = ? LIMIT 1';
+			var params = [id];
+			
+			$cordovaSQLite.execute(groceryRepository.database, query, params)
+				.then(getDepartmentSucces, getDepartmentFail);
+			
+			function getDepartmentSucces(res){
+				$log.info("Got a department.", res);
+				deferred.resolve(res.rows.item(0));
+			}
+			
+			function getDepartmentFail(err){
+				$log.error("Error: Failed to get department from database in groceryRepository.getDepartment(). Inner error -> ", err);
+				deferred.reject(err);
+			}
+			
+			return deferred.promise;
+		}
+		
+		function updateDepartment(department){
+			var deferred = $q.defer();
+			var query = 'UPDATE departments SET name = ? WHERE id = ?';
+			var params = [department.name, department.id];
+			
+			$cordovaSQLite.execute(groceryRepository.database, query, params)
+				.then(updateDepartmentSuccess, updateDepartmentFail);
+			
+			function updateDepartmentSuccess(res){
+				deferred.resolve();
+			}
+			
+			function updateDepartmentFail(err){
+				$log.error("Error: Failed to update department in database at groceryRepository.updateDepartment().  Inner error -> ", err);
+				deferred.reject(err);
+			}
+			
+			return deferred.promise;
+		}
+		
+		function deleteDepartment(id){
+			var deferred = $q.defer();
+			var query = 'DELETE FROM departments WHERE id = ?';
+			var params = [id];
+			
+			$cordovaSQLite.execute(groceryRepository.database, query, params)
+				.then(deleteDepartmentSuccess, deleteDepartmentFail);
+			
+			function deleteDepartmentSuccess(rest){
+				deferred.resolve();
+			}
+			
+			function deleteDepartmentFail(err){
+				$log.error("Error: Failed to delete department from database at groceryRepository.deleteDepartment(id). Inner error -> ", err);
 				deferred.reject(err);
 			}
 			
